@@ -35,32 +35,32 @@ public extension Data {
 
 public extension Packable {
 
-    func packToData() -> Data {
-        return Data(bytes: pack())
+    func pack() -> Data {
+        return Data(bytes: packToBytes())
     }
 
 }
 
 extension Array where Element: Packable {
 
-    public func packToData() -> Data {
-        return Data(bytes: pack())
+    public func pack() -> Data {
+        return Data(bytes: packToBytes())
     }
 
 }
 
 extension Dictionary where Key: Hashable, Key: Packable, Value: Packable {
 
-    public func packToData() -> Data {
-        return Data(bytes: pack())
+    public func pack() -> Data {
+        return Data(bytes: packToBytes())
     }
 
 }
 
 extension Optional where Wrapped: Packable {
 
-    public func packToData() -> Data {
-        return Data(bytes: pack())
+    public func pack() -> Data {
+        return Data(bytes: packToBytes())
     }
 
 }

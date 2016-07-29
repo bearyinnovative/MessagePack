@@ -8,21 +8,21 @@
 
 public protocol Packable {
 
-    func pack() -> Bytes
+    func packToBytes() -> Bytes
 
 }
 
 extension Array where Element: Packable {
 
-    public func pack() -> Bytes {
-        return _collectionMarkerBytes(length: count, markers: [.fixarray, .array16, .array32]) + flatMap { $0.pack() }
+    public func packToBytes() -> Bytes {
+        return _collectionMarkerBytes(length: count, markers: [.fixarray, .array16, .array32]) + flatMap { $0.packToBytes() }
     }
 
 }
 
 extension Binary: Packable {
 
-    public func pack() -> Bytes {
+    public func packToBytes() -> Bytes {
         return _binaryMarkerBytes(length: bytes.count, markers: [.bin8, .bin16, .bin32]) + bytes
     }
 
@@ -30,7 +30,7 @@ extension Binary: Packable {
 
 extension Bool: Packable {
 
-    public func pack() -> Bytes {
+    public func packToBytes() -> Bytes {
         switch self {
         case true:
             return [FormatMark.`true`.rawValue]
@@ -43,15 +43,15 @@ extension Bool: Packable {
 
 extension Dictionary where Key: Hashable, Key: Packable, Value: Packable {
 
-    public func pack() -> Bytes {
-        return _collectionMarkerBytes(length: count, markers: [.fixmap, .map16, .map32]) + flatMap { $0.pack() + $1.pack() }
+    public func packToBytes() -> Bytes {
+        return _collectionMarkerBytes(length: count, markers: [.fixmap, .map16, .map32]) + flatMap { $0.packToBytes() + $1.packToBytes() }
     }
 
 }
 
 extension Double: Packable {
 
-    public func pack() -> Bytes {
+    public func packToBytes() -> Bytes {
         let intValue = unsafeBitCast(self, to: UInt64.self)
         return [FormatMark.double.rawValue] + _bytes(of: intValue)
     }
@@ -60,7 +60,7 @@ extension Double: Packable {
 
 extension Extension: Packable {
 
-    public func pack() -> Bytes {
+    public func packToBytes() -> Bytes {
         let typeByte = Byte(bitPattern: type)
         let formatBytes: Bytes = {
             let count = UInt32(binary.bytes.count)
@@ -91,7 +91,7 @@ extension Extension: Packable {
 
 extension Float: Packable {
 
-    public func pack() -> Bytes {
+    public func packToBytes() -> Bytes {
         let intValue = unsafeBitCast(self, to: UInt32.self)
         return [FormatMark.float.rawValue] + _bytes(of: intValue)
     }
@@ -100,8 +100,8 @@ extension Float: Packable {
 
 extension Int: Packable {
 
-    public func pack() -> Bytes {
-        return Int64(self).pack()
+    public func packToBytes() -> Bytes {
+        return Int64(self).packToBytes()
     }
     
 }
@@ -109,7 +109,7 @@ extension Int: Packable {
 
 extension Int64: Packable {
 
-    public func pack() -> Bytes {
+    public func packToBytes() -> Bytes {
         if self >= 0 { return _packPositive(int: numericCast(self)) }
         return _packNegative(int: numericCast(self))
     }
@@ -118,16 +118,16 @@ extension Int64: Packable {
 
 extension Optional where Wrapped: Packable {
 
-    public func pack() -> Bytes {
+    public func packToBytes() -> Bytes {
         guard let some = self else { return [FormatMark.`nil`.rawValue] }
-        return some.pack()
+        return some.packToBytes()
     }
 
 }
 
 extension String: Packable {
 
-    public func pack() -> Bytes {
+    public func packToBytes() -> Bytes {
         let len = utf8.count
         let formatBytes: Bytes = {
             if  len < 0x20 { return [FormatMark.fixstr.rawValue | numericCast(len) ] }
@@ -141,14 +141,14 @@ extension String: Packable {
 
 extension UInt: Packable {
 
-    public func pack() -> Bytes {
-        return UInt64(self).pack()
+    public func packToBytes() -> Bytes {
+        return UInt64(self).packToBytes()
     }
 }
 
 extension UInt64: Packable {
 
-    public func pack() -> Bytes {
+    public func packToBytes() -> Bytes {
         return _packPositive(int: numericCast(self))
     }
 
@@ -156,30 +156,30 @@ extension UInt64: Packable {
 
 extension MPValue: Packable {
 
-    public func pack() -> Bytes {
+    public func packToBytes() -> Bytes {
         switch self {
         case .array(let a):
-            return a.pack()
+            return a.packToBytes()
         case .binary(let b):
-            return b.pack()
+            return b.packToBytes()
         case .bool(let b):
-            return b.pack()
+            return b.packToBytes()
         case .dictionary(let d):
-            return d.pack()
+            return d.packToBytes()
         case .double(let d):
-            return d.pack()
+            return d.packToBytes()
         case .extension(let e):
-            return e.pack()
+            return e.packToBytes()
         case .float(let f):
-            return f.pack()
+            return f.packToBytes()
         case .int64(let i):
-            return i.pack()
+            return i.packToBytes()
         case .nil:
             return [FormatMark.`nil`.rawValue]
         case .string(let s):
-            return s.pack()
+            return s.packToBytes()
         case .uint64(let u):
-            return u.pack()
+            return u.packToBytes()
         }
     }
 

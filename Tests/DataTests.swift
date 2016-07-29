@@ -44,34 +44,34 @@ class DataTests: XCTestCase {
     }
 
     func testPackingToData() {
-        var bytes = "str".pack()
-        var data = "str".packToData()
+        var bytes = "str".packToBytes()
+        var data = "str".pack()
         data.withUnsafeBytes { (pointer: UnsafePointer<UInt8>) in
             XCTAssertEqual(bytes, Array(UnsafeBufferPointer(start: pointer, count: data.count)))
         }
 
-        bytes = [1, 2, 3].pack()
-        data = [1, 2, 3].packToData()
+        bytes = [1, 2, 3].packToBytes()
+        data = [1, 2, 3].pack()
         data.withUnsafeBytes { (pointer: UnsafePointer<UInt8>) in
            XCTAssertEqual(bytes, Array(UnsafeBufferPointer(start: pointer, count: data.count)))
         }
 
-        bytes = ["a": 1].pack()
-        data = ["a": 1].packToData()
+        bytes = ["a": 1].packToBytes()
+        data = ["a": 1].pack()
         data.withUnsafeBytes { (pointer: UnsafePointer<UInt8>) in
             XCTAssertEqual(bytes, Array(UnsafeBufferPointer(start: pointer, count: data.count)))
         }
 
         var a: Int? = nil
-        bytes = a.pack()
-        data = a.packToData()
+        bytes = a.packToBytes()
+        data = a.pack()
         data.withUnsafeBytes { (pointer: UnsafePointer<UInt8>) in
             XCTAssertEqual(bytes, Array(UnsafeBufferPointer(start: pointer, count: data.count)))
         }
 
         a = 100
-        bytes = a.pack()
-        data = a.packToData()
+        bytes = a.packToBytes()
+        data = a.pack()
         data.withUnsafeBytes { (pointer: UnsafePointer<UInt8>) in
             XCTAssertEqual(bytes, Array(UnsafeBufferPointer(start: pointer, count: data.count)))
         }

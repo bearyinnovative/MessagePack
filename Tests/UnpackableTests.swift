@@ -69,13 +69,13 @@ class UnpackableTests: XCTestCase {
         XCTAssertEqual(unpack2?[2], "b")
 
 
-        var dicBytes = (0..<0x100).flatMap { $0.pack() + (-$0).pack() }
+        var dicBytes = (0..<0x100).flatMap { $0.packToBytes() + (-$0).packToBytes() }
         testBytes = [0xde, 1, 0] + dicBytes
         var intsDic: [Int: Int]? = Unpacker.unpack(bytes: testBytes)?.dictionaryValue()
         XCTAssertEqual(intsDic?.count, 0x100)
         XCTAssertEqual(intsDic?[0xab], -0xab)
 
-        dicBytes = (0..<0x1_00_00).flatMap { $0.pack() + (-$0).pack() }
+        dicBytes = (0..<0x1_00_00).flatMap { $0.packToBytes() + (-$0).packToBytes() }
         testBytes = [0xdf, 0, 1, 0, 0] + dicBytes
         intsDic = Unpacker.unpack(bytes: testBytes)?.dictionaryValue()
         XCTAssertEqual(intsDic?.count, 0x1_00_00)
