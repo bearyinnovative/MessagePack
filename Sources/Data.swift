@@ -32,3 +32,35 @@ public extension Data {
     }
 
 }
+
+public extension Packable {
+
+    func packToData() -> Data {
+        return Data(bytes: pack())
+    }
+
+}
+
+extension Array where Element: Packable {
+
+    public func packToData() -> Data {
+        return Data(bytes: pack())
+    }
+
+}
+
+extension Dictionary where Key: Hashable, Key: Packable, Value: Packable {
+
+    public func packToData() -> Data {
+        return Data(bytes: pack())
+    }
+
+}
+
+extension Optional where Wrapped: Packable {
+
+    public func packToData() -> Data {
+        return Data(bytes: pack())
+    }
+
+}
