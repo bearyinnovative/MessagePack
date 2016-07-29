@@ -7,6 +7,7 @@ Swift implementation for [MessagePack](https://github.com/msgpack/msgpack/blob/m
 ```swift
 protocol Packable {
     func pack() -> Bytes
+    func packToData() -> Data
 }
 ```
 
