@@ -72,6 +72,17 @@ public extension MPValue {
         return ret
     }
 
+    func dictionaryValue<K: HashableUnpackableStdType>() -> [K: MPValue]? {
+        guard let dic = dictionaryValue() else { return nil }
+        var ret = [K: MPValue]()
+        for (key, val) in dic {
+            guard let key: K = key.value() else { return nil }
+            ret[key] = val
+        }
+
+        return ret
+    }
+
     func dictionaryValue<K: HashableUnpackableStdType, V: UnpackableStdType>() -> [K: V]? {
         guard let dic = dictionaryValue() else { return nil }
         var ret = [K: V]()

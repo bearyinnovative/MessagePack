@@ -68,6 +68,9 @@ class UnpackableTests: XCTestCase {
         XCTAssertEqual(unpack2?[1], "a")
         XCTAssertEqual(unpack2?[2], "b")
 
+        let unpack3: [Int: MPValue]? = Unpacker.unpack(bytes: testBytes)?.dictionaryValue()
+        XCTAssertEqual(unpack3?[1], .string("a"))
+        XCTAssertEqual(unpack3?[2], .string("b"))
 
         var dicBytes = (0..<0x100).flatMap { $0.packToBytes() + (-$0).packToBytes() }
         testBytes = [0xde, 1, 0] + dicBytes
