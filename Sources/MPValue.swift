@@ -175,7 +175,7 @@ public func ==(lhs: MPValue, rhs: MPValue) -> Bool {
 
 // MARK: - LiteralConvertibles
 
-extension MPValue: ArrayLiteralConvertible {
+extension MPValue: ExpressibleByArrayLiteral {
 
     public init(arrayLiteral elements: MPValue...) {
         self = .array(elements)
@@ -183,7 +183,7 @@ extension MPValue: ArrayLiteralConvertible {
 
 }
 
-extension MPValue: BooleanLiteralConvertible {
+extension MPValue: ExpressibleByBooleanLiteral {
 
     public init(booleanLiteral value: Bool) {
         self = .bool(value)
@@ -191,7 +191,7 @@ extension MPValue: BooleanLiteralConvertible {
 
 }
 
-extension MPValue: DictionaryLiteralConvertible {
+extension MPValue: ExpressibleByDictionaryLiteral {
 
     public init(dictionaryLiteral elements: (MPValue, MPValue)...) {
         var dic = [MPValue: MPValue]()
@@ -204,7 +204,7 @@ extension MPValue: DictionaryLiteralConvertible {
 
 }
 
-extension MPValue: FloatLiteralConvertible {
+extension MPValue: ExpressibleByFloatLiteral {
 
     public init(floatLiteral value: Double) {
         let int64 = Int64(value)
@@ -220,7 +220,7 @@ extension MPValue: FloatLiteralConvertible {
 
 }
 
-extension MPValue: IntegerLiteralConvertible {
+extension MPValue: ExpressibleByIntegerLiteral {
 
     public init(integerLiteral value: Int) {
         self = .int64(numericCast(value))
@@ -228,7 +228,7 @@ extension MPValue: IntegerLiteralConvertible {
 
 }
 
-extension MPValue: NilLiteralConvertible {
+extension MPValue: ExpressibleByNilLiteral {
 
     public init(nilLiteral: ()) {
         self = .nil
@@ -236,7 +236,7 @@ extension MPValue: NilLiteralConvertible {
 
 }
 
-extension MPValue: ExtendedGraphemeClusterLiteralConvertible {
+extension MPValue: ExpressibleByExtendedGraphemeClusterLiteral {
 
     public init(extendedGraphemeClusterLiteral value: String) {
         self = .string(value)
@@ -244,7 +244,7 @@ extension MPValue: ExtendedGraphemeClusterLiteralConvertible {
 }
 
 
-extension MPValue: UnicodeScalarLiteralConvertible {
+extension MPValue: ExpressibleByUnicodeScalarLiteral {
 
     public init(unicodeScalarLiteral value: String) {
         self = .string(value)
@@ -252,7 +252,7 @@ extension MPValue: UnicodeScalarLiteralConvertible {
 
 }
 
-extension MPValue: StringLiteralConvertible {
+extension MPValue: ExpressibleByStringLiteral {
 
     public init(stringLiteral value: String) {
         self = .string(value)

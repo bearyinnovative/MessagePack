@@ -204,36 +204,36 @@ class MPValueTests: XCTestCase {
 
 }
 
-// MARK: - LiteralConvertibles
+// MARK: - Expressibles
 
 extension MPValueTests {
 
-    func testArrayLiteralConvertibles() {
+    func testExpressibleByArrayLiterals() {
         let val: MPValue = [1, 2, 3]
         XCTAssertEqual(val, .array([1, 2, 3]))
     }
 
-    func testBooleanLiteralConvertibles() {
+    func testExpressibleByBooleanLiterals() {
         let val: MPValue = true
         XCTAssertEqual(val, .bool(true))
     }
 
-    func testDictionaryLiteralConvertibles() {
+    func testExpressibleByDictionaryLiterals() {
         let val: MPValue = ["a": 1]
         XCTAssertEqual(val, .dictionary(["a": 1]))
     }
 
-    func testIntegerLiteralConvertibles() {
+    func testExpressibleByIntegerLiterals() {
         let val: MPValue = 5
         XCTAssertEqual(val, .int64(5))
     }
 
-    func testNilLiteralConvertibles() {
+    func testExpressibleByNilLiterals() {
         let val: MPValue = nil
         XCTAssertEqual(val, .nil)
     }
 
-    func testFloatLiteralConvertibles() {
+    func testExpressibleByFloatLiterals() {
         let asInt: MPValue = 5.0
         XCTAssertEqual(asInt, .int64(5))
         let asFloat: MPValue = 0.5
@@ -242,7 +242,7 @@ extension MPValueTests {
         XCTAssertEqual(asDouble, .double(3.1415926535))
     }
 
-    func testStringLiteralConvertibles() {
+    func testExpressibleByStringLiteral() {
         let val: MPValue = "a"
         XCTAssertEqual(val, .string("a"))
     }
