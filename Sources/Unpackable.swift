@@ -173,7 +173,6 @@ struct NilUnpacker: Unpackable {
         return (.nil, 1)
     }
 
-
 }
 
 extension String: Unpackable {
@@ -314,4 +313,5 @@ private extension Array {
         if bounds.upperBound > endIndex || bounds.lowerBound < startIndex { return nil }
         return self[bounds]
     }
+
 }

@@ -144,6 +144,7 @@ extension UInt: Packable {
     public func packToBytes() -> Bytes {
         return UInt64(self).packToBytes()
     }
+
 }
 
 extension UInt64: Packable {
