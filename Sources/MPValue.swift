@@ -142,35 +142,35 @@ extension MPValue: Hashable {
         }
     }
 
-}
-
-public func ==(lhs: MPValue, rhs: MPValue) -> Bool {
-    switch (lhs, rhs) {
-    case let (.array(lv), .array(rv)):
-        return lv == rv
-    case let (.binary(lv), .binary(rv)):
-        return lv == rv
-    case let (.bool(lv), .bool(rv)):
-        return lv == rv
-    case let (.dictionary(lv), .dictionary(rv)):
-        return lv == rv
-    case let (.double(lv), .double(rv)):
-        return lv == rv
-    case let (.extension(lv), .extension(rv)):
-        return lv == rv
-    case let (.float(lv), .float(rv)):
-        return lv == rv
-    case let (.int64(lv), .int64(rv)):
-        return lv == rv
-    case (.nil, .nil):
-        return true
-    case let (.string(lv), .string(rv)):
-        return lv == rv
-    case let (.uint64(lv), .uint64(rv)):
-        return lv == rv
-    default:
-        return false
+    public static func ==(lhs: MPValue, rhs: MPValue) -> Bool {
+        switch (lhs, rhs) {
+        case let (.array(lv), .array(rv)):
+            return lv == rv
+        case let (.binary(lv), .binary(rv)):
+            return lv == rv
+        case let (.bool(lv), .bool(rv)):
+            return lv == rv
+        case let (.dictionary(lv), .dictionary(rv)):
+            return lv == rv
+        case let (.double(lv), .double(rv)):
+            return lv == rv
+        case let (.extension(lv), .extension(rv)):
+            return lv == rv
+        case let (.float(lv), .float(rv)):
+            return lv == rv
+        case let (.int64(lv), .int64(rv)):
+            return lv == rv
+        case (.nil, .nil):
+            return true
+        case let (.string(lv), .string(rv)):
+            return lv == rv
+        case let (.uint64(lv), .uint64(rv)):
+            return lv == rv
+        default:
+            return false
+        }
     }
+
 }
 
 // MARK: - LiteralConvertibles
