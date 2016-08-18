@@ -117,10 +117,10 @@ enum FormatMark: UInt8 {
 }
 
 private func hash(bytes: Bytes) -> Int {
-    var hash = Array(repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH) / sizeof(Int.self))
+    var hash = Array(repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH) / MemoryLayout<Int>.size)
     bytes.withUnsafeBufferPointer { bytesp in
         hash.withUnsafeMutableBufferPointer { (hashp: inout UnsafeMutableBufferPointer<Int>) -> Void in
-            CC_SHA256(UnsafePointer<Void>(bytesp.baseAddress), CC_LONG(bytes.count * sizeof(Byte.self)), UnsafeMutablePointer<UInt8>(hashp.baseAddress))
+            CC_SHA256(UnsafeRawPointer(bytesp.baseAddress), CC_LONG(bytes.count * MemoryLayout<Byte>.size), unsafeBitCast(hashp.baseAddress, to: UnsafeMutablePointer<UInt8>.self))
         }
     }
     

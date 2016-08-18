@@ -188,7 +188,7 @@ extension MPValue: Packable {
 
 // MARK: - Privates
 private func _bytes<T: UnsignedInteger>(of uint: T) -> Bytes {
-    let size = UInt64(sizeofValue(uint))
+    let size = UInt64(MemoryLayout<T>.size)
     let high = 8 * (size - 1)
     return stride(from: high, through: 0, by: -8).map { Byte(truncatingBitPattern: numericCast(uint) >> $0) }
 }
