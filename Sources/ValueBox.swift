@@ -1,17 +1,17 @@
 //
-//  MPValue.swift
+//  ValueBox.swift
 //  MessagePack
 //
 //  Created by CHEN Xian’an on 25/07/2016.
 //  Copyright © 2016 Beary Innovative. All rights reserved.
 //
 
-public enum MPValue {
+public enum ValueBox {
 
-    case array([MPValue])
+    case array([ValueBox])
     case binary(Binary)
     case bool(Bool)
-    case dictionary([MPValue: MPValue])
+    case dictionary([ValueBox: ValueBox])
     case double(Double)
     case `extension`(Extension)
     case float(Float)
@@ -24,50 +24,50 @@ public enum MPValue {
 
 // MARK: - Shortcut getters
 
-public extension MPValue {
+public extension ValueBox {
 
-    func arrayValue() -> [MPValue]? {
+    var array: [ValueBox]? {
         guard case let .array(val) = self else { return nil }
         return val
     }
 
-    func binaryValue() -> Binary? {
+    var binary: Binary? {
         guard case let .binary(val) = self else { return nil }
         return val
     }
 
-    func boolValue() -> Bool? {
+    var bool: Bool? {
         guard case let .bool(val) = self else { return nil }
         return val
     }
 
-    func dictionaryValue() -> [MPValue: MPValue]? {
+    var dictionary: [ValueBox: ValueBox]? {
         guard case let .dictionary(val) = self else { return nil }
         return val
     }
 
-    func doubleValue() -> Double? {
+    var double: Double? {
         if case let .double(val) = self { return val }
         if case let .float(val) = self { return Double(val) }
-        if let int64 = int64Value() { return Double(int64) }
-        if let uint64 = uint64Value() { return Double(uint64) }
+        if let int64 = int64 { return Double(int64) }
+        if let uint64 = uint64 { return Double(uint64) }
         return nil
     }
 
-    func extensionValue() -> Extension? {
+    var `extension`: Extension? {
         guard case let .extension(val) = self else { return nil }
         return val
     }
 
-    func floatValue() -> Float? {
+    var float: Float? {
         if case let .float(val) = self { return val }
         if case let .double(val) = self { return Float(val) }
-        if let int64 = int64Value() { return Float(int64) }
-        if let uint64 = uint64Value() { return Float(uint64) }
+        if let int64 = int64 { return Float(int64) }
+        if let uint64 = uint64 { return Float(uint64) }
         return nil
     }
 
-    func int64Value() -> Int64? {
+    var int64: Int64? {
         if case let .int64(val) = self { return val }
         if case let .uint64(val) = self { return val <= UInt64(Int64.max) ? Int64(val) : nil }
         if case let .double(val) = self { return Int64(val) }
@@ -75,25 +75,25 @@ public extension MPValue {
         return nil
     }
 
-    func intValue() -> Int? {
+    var int: Int? {
         #if arch(arm) || arch(i386)
-            return int64Value().flatMap { $0 >= Int64(Int.min) && $0 <= Int64(Int.max) ? Int($0): nil }
+            return int64.flatMap { $0 >= Int64(Int.min) && $0 <= Int64(Int.max) ? Int($0): nil }
         #else
-            return int64Value().flatMap(Int.init)
+            return int64.flatMap(Int.init)
         #endif
     }
 
-    func isNil() -> Bool {
+    var isNil: Bool {
         if case .nil = self { return true }
         return false
     }
 
-    func stringValue() -> String? {
+    var string: String? {
         guard case let .string(val) = self else { return nil }
         return val
     }
 
-    func uint64Value() -> UInt64? {
+    var uint64: UInt64? {
         if case let .uint64(val) = self { return val }
         if case let .int64(val) = self { return val < 0 ? nil : UInt64(val) }
         if case let .double(val) = self { return val < 0 ? nil : UInt64(val) }
@@ -101,19 +101,33 @@ public extension MPValue {
         return nil
     }
 
-    func uintValue() -> UInt? {
+    var uint: UInt? {
         #if arch(arm) || arch(i386)
             return uint64Value().flatMap { $0 >= UInt64(UInt.min) && $0 <= UInt64(UInt.max) ? UInt($0) : nil }
         #else
-            return uint64Value().flatMap(UInt.init)
+            return uint64.flatMap(UInt.init)
         #endif
     }
 
+    func box(for keyPath: String) -> ValueBox? {
+        let keys = keyPath.components(separatedBy: ".")
+        var box: ValueBox? = self
+        for key in keys {
+            box = box?.dictionary?[.string(key)]
+        }
+
+        return box
+    }
+
+    func value<T : UnpackableStdType>(for keyPath: String) -> T? {
+        return box(for: keyPath)?.value()
+    }
+    
 }
 
 // MARK: - Hashable
 
-extension MPValue: Hashable {
+extension ValueBox: Hashable {
 
     public var hashValue: Int {
         switch self {
@@ -142,7 +156,7 @@ extension MPValue: Hashable {
         }
     }
 
-    public static func ==(lhs: MPValue, rhs: MPValue) -> Bool {
+    public static func ==(lhs: ValueBox, rhs: ValueBox) -> Bool {
         switch (lhs, rhs) {
         case let (.array(lv), .array(rv)):
             return lv == rv
@@ -175,15 +189,15 @@ extension MPValue: Hashable {
 
 // MARK: - LiteralConvertibles
 
-extension MPValue: ExpressibleByArrayLiteral {
+extension ValueBox: ExpressibleByArrayLiteral {
 
-    public init(arrayLiteral elements: MPValue...) {
+    public init(arrayLiteral elements: ValueBox...) {
         self = .array(elements)
     }
 
 }
 
-extension MPValue: ExpressibleByBooleanLiteral {
+extension ValueBox: ExpressibleByBooleanLiteral {
 
     public init(booleanLiteral value: Bool) {
         self = .bool(value)
@@ -191,10 +205,10 @@ extension MPValue: ExpressibleByBooleanLiteral {
 
 }
 
-extension MPValue: ExpressibleByDictionaryLiteral {
+extension ValueBox: ExpressibleByDictionaryLiteral {
 
-    public init(dictionaryLiteral elements: (MPValue, MPValue)...) {
-        var dic = [MPValue: MPValue]()
+    public init(dictionaryLiteral elements: (ValueBox, ValueBox)...) {
+        var dic = [ValueBox: ValueBox]()
         for (k, v) in elements {
             dic[k] = v
         }
@@ -204,7 +218,7 @@ extension MPValue: ExpressibleByDictionaryLiteral {
 
 }
 
-extension MPValue: ExpressibleByFloatLiteral {
+extension ValueBox: ExpressibleByFloatLiteral {
 
     public init(floatLiteral value: Double) {
         let int64 = Int64(value)
@@ -220,7 +234,7 @@ extension MPValue: ExpressibleByFloatLiteral {
 
 }
 
-extension MPValue: ExpressibleByIntegerLiteral {
+extension ValueBox: ExpressibleByIntegerLiteral {
 
     public init(integerLiteral value: Int) {
         self = .int64(numericCast(value))
@@ -228,7 +242,7 @@ extension MPValue: ExpressibleByIntegerLiteral {
 
 }
 
-extension MPValue: ExpressibleByNilLiteral {
+extension ValueBox: ExpressibleByNilLiteral {
 
     public init(nilLiteral: ()) {
         self = .nil
@@ -236,7 +250,7 @@ extension MPValue: ExpressibleByNilLiteral {
 
 }
 
-extension MPValue: ExpressibleByExtendedGraphemeClusterLiteral {
+extension ValueBox: ExpressibleByExtendedGraphemeClusterLiteral {
 
     public init(extendedGraphemeClusterLiteral value: String) {
         self = .string(value)
@@ -245,7 +259,7 @@ extension MPValue: ExpressibleByExtendedGraphemeClusterLiteral {
 }
 
 
-extension MPValue: ExpressibleByUnicodeScalarLiteral {
+extension ValueBox: ExpressibleByUnicodeScalarLiteral {
 
     public init(unicodeScalarLiteral value: String) {
         self = .string(value)
@@ -253,7 +267,7 @@ extension MPValue: ExpressibleByUnicodeScalarLiteral {
 
 }
 
-extension MPValue: ExpressibleByStringLiteral {
+extension ValueBox: ExpressibleByStringLiteral {
 
     public init(stringLiteral value: String) {
         self = .string(value)

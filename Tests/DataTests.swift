@@ -11,26 +11,26 @@ import XCTest
 
 class DataTests: XCTestCase {
     
-    func testUnpackingToArrayWithMPValues() {
+    func testUnpackingToArrayWithValueBoxs() {
         let bytes = makeBytes("95 01 02 03 04 05")
         let data = Data(bytes: bytes)
-        let val = data.unpack()
-        let array = val?.arrayValue()
+        let box = data.unpack()
+        let array = box?.array
         XCTAssertNotNil(array)
-        XCTAssertEqual(array!, [1, 2, 3, 4, 5].map(MPValue.uint64))
+        XCTAssertEqual(array!, [1, 2, 3, 4, 5].map(ValueBox.uint64))
     }
 
     func testUnpackingToStdTypes() {
         let bytes = makeBytes("ad 68 65 6c 6c 6f 2c 20 77 6f 72 6c 64 21")
         let data = Data(bytes: bytes)
-        let val: String? = data.unpack()
+        let val: String? = data.unpack()?.string
         XCTAssertEqual(val, "hello, world!")
     }
 
     func testUnpackingToArrayWithStdTypes() {
         let bytes = makeBytes("95 a1 31 a1 32 a1 33 a1 34 a1 35")
         let data = Data(bytes: bytes)
-        let val: [String]? = data.unpack()
+        let val: [ValueBox]? = data.unpack()?.array
         XCTAssertNotNil(val)
         XCTAssertEqual(val!, ["1", "2", "3", "4", "5"])
     }
@@ -38,9 +38,10 @@ class DataTests: XCTestCase {
     func testUnpackingToDictionaryWithStdTypes() {
         let bytes = makeBytes("82 a1 61 01 a1 62 02")
         let data = Data(bytes: bytes)
-        let val: [String: Int]? = data.unpack()
-        XCTAssertNotNil(val)
-        XCTAssertEqual(val!, ["a": 1, "b": 2])
+        let box = data.unpack()
+        XCTAssertNotNil(box)
+        XCTAssertEqual(box?.value(for: "a"), 1)
+        XCTAssertEqual(box?.value(for: "b"), 2)
     }
 
     func testPackingToData() {

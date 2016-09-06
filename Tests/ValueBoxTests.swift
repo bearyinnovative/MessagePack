@@ -1,5 +1,5 @@
 //
-//  MPValueTests.swift
+//  ValueBoxTests.swift
 //  MessagePack
 //
 //  Created by CHEN Xian’an on 26/07/2016.
@@ -9,12 +9,12 @@
 import XCTest
 @testable import MessagePack
 
-class MPValueTests: XCTestCase {
+class ValueBoxTests: XCTestCase {
 
     func testEquatables() {
-        var m1: MPValue = [1, 2, 3]
-        var m2: MPValue = [1, 2, 3]
-        var m3: MPValue = ["1", "2", "3"]
+        var m1: ValueBox = [1, 2, 3]
+        var m2: ValueBox = [1, 2, 3]
+        var m3: ValueBox = ["1", "2", "3"]
         XCTAssertEqual(m1, m2)
         XCTAssertNotEqual(m1, m3)
 
@@ -80,7 +80,7 @@ class MPValueTests: XCTestCase {
     }
 
     func testHashables() {
-        var dic: [MPValue: MPValue] = [[1]: 1]
+        var dic: [ValueBox: ValueBox] = [[1]: 1]
         XCTAssertEqual(dic[[1]], 1)
 
         dic = [.binary(Binary(bytes: [0x7f])): true]
@@ -115,90 +115,90 @@ class MPValueTests: XCTestCase {
     }
 
     func testShortcutGetters() {
-        var mp: MPValue = .array([1,2,3])
-        XCTAssertNotNil(mp.arrayValue())
-        XCTAssertEqual(mp.arrayValue()!, [1,2,3])
-        XCTAssertNil(mp.binaryValue())
-        XCTAssertNil(mp.boolValue())
-        XCTAssertNil(mp.dictionaryValue())
-        XCTAssertNil(mp.doubleValue())
-        XCTAssertNil(mp.extensionValue())
-        XCTAssertNil(mp.floatValue())
-        XCTAssertNil(mp.int64Value())
-        XCTAssertNil(mp.intValue())
-        XCTAssertNil(mp.stringValue())
-        XCTAssertNil(mp.uint64Value())
-        XCTAssertNil(mp.uintValue())
-        XCTAssertFalse(mp.isNil())
+        var mp: ValueBox = .array([1,2,3])
+        XCTAssertNotNil(mp.array)
+        XCTAssertEqual(mp.array!, [1,2,3])
+        XCTAssertNil(mp.binary)
+        XCTAssertNil(mp.bool)
+        XCTAssertNil(mp.dictionary)
+        XCTAssertNil(mp.double)
+        XCTAssertNil(mp.extension)
+        XCTAssertNil(mp.float)
+        XCTAssertNil(mp.int64)
+        XCTAssertNil(mp.int)
+        XCTAssertNil(mp.string)
+        XCTAssertNil(mp.uint64)
+        XCTAssertNil(mp.uint)
+        XCTAssertFalse(mp.isNil)
 
         mp = .binary(Binary(bytes: [0x7f]))
-        XCTAssertEqual(mp.binaryValue(), Binary(bytes: [0x7f]))
+        XCTAssertEqual(mp.binary, Binary(bytes: [0x7f]))
 
         mp = .bool(true)
-        XCTAssertEqual(mp.boolValue(), true)
+        XCTAssertEqual(mp.bool, true)
 
         mp = .dictionary([1: 1])
-        XCTAssertNotNil(mp.dictionaryValue())
-        XCTAssertEqual(mp.dictionaryValue()!, [1: 1])
+        XCTAssertNotNil(mp.dictionary)
+        XCTAssertEqual(mp.dictionary!, [1: 1])
 
         mp = .double(4.5123)
-        XCTAssertEqual(mp.doubleValue(), 4.5123)
-        XCTAssertEqual(mp.floatValue(), Float(4.5123))
-        XCTAssertEqual(mp.int64Value(), Int64(4.5123))
-        XCTAssertEqual(mp.uint64Value(), UInt64(4.5123))
+        XCTAssertEqual(mp.double, 4.5123)
+        XCTAssertEqual(mp.float, Float(4.5123))
+        XCTAssertEqual(mp.int64, Int64(4.5123))
+        XCTAssertEqual(mp.uint64, UInt64(4.5123))
 
         mp = .double(-4.5123)
-        XCTAssertEqual(mp.doubleValue(), -4.5123)
-        XCTAssertEqual(mp.floatValue(), Float(-4.5123))
-        XCTAssertEqual(mp.int64Value(), Int64(-4.5123))
-        XCTAssertNil(mp.uint64Value())
+        XCTAssertEqual(mp.double, -4.5123)
+        XCTAssertEqual(mp.float, Float(-4.5123))
+        XCTAssertEqual(mp.int64, Int64(-4.5123))
+        XCTAssertNil(mp.uint64)
 
         mp = .extension(Extension(type:1, binary: Binary(bytes: [0x7f])))
-        XCTAssertEqual(mp.extensionValue(), Extension(type:1, binary: Binary(bytes: [0x7f])))
+        XCTAssertEqual(mp.extension, Extension(type:1, binary: Binary(bytes: [0x7f])))
 
         mp = .float(1.125)
-        XCTAssertEqual(mp.floatValue(), 1.125)
-        XCTAssertEqual(mp.doubleValue(), 1.125)
-        XCTAssertEqual(mp.int64Value(), Int64(1.125))
-        XCTAssertEqual(mp.uint64Value(), UInt64(1.125))
+        XCTAssertEqual(mp.float, 1.125)
+        XCTAssertEqual(mp.double, 1.125)
+        XCTAssertEqual(mp.int64, Int64(1.125))
+        XCTAssertEqual(mp.uint64, UInt64(1.125))
 
         mp = .float(-1.125)
-        XCTAssertEqual(mp.floatValue(), -1.125)
-        XCTAssertEqual(mp.doubleValue(), -1.125)
-        XCTAssertEqual(mp.int64Value(), Int64(-1.125))
-        XCTAssertNil(mp.uint64Value())
+        XCTAssertEqual(mp.float, -1.125)
+        XCTAssertEqual(mp.double, -1.125)
+        XCTAssertEqual(mp.int64, Int64(-1.125))
+        XCTAssertNil(mp.uint64)
 
         mp = .int64(Int64.max)
-        XCTAssertEqual(mp.int64Value(), Int64.max)
-        XCTAssertEqual(mp.doubleValue(), Double(Int64.max))
-        XCTAssertEqual(mp.floatValue(), Float(Int64.max))
+        XCTAssertEqual(mp.int64, Int64.max)
+        XCTAssertEqual(mp.double, Double(Int64.max))
+        XCTAssertEqual(mp.float, Float(Int64.max))
         #if arch(i386) || arch(arm)
-            XCTAssertNil(mp.intValue())
+            XCTAssertNil(mp.int)
         #else
-            XCTAssertNotNil(mp.intValue())
+            XCTAssertNotNil(mp.int)
         #endif
 
         mp = .int64(Int64.min)
-        XCTAssertEqual(mp.int64Value(), Int64.min)
-        XCTAssertEqual(mp.doubleValue(), Double(Int64.min))
-        XCTAssertEqual(mp.floatValue(), Float(Int64.min))
+        XCTAssertEqual(mp.int64, Int64.min)
+        XCTAssertEqual(mp.double, Double(Int64.min))
+        XCTAssertEqual(mp.float, Float(Int64.min))
         #if arch(i386) || arch(arm)
-            XCTAssertNil(mp.intValue())
+            XCTAssertNil(mp.int)
         #else
-            XCTAssertNotNil(mp.intValue())
+            XCTAssertNotNil(mp.int)
         #endif
 
         mp = .string("str")
-        XCTAssertEqual(mp.stringValue(), "str")
+        XCTAssertEqual(mp.string, "str")
 
         mp = .uint64(UInt64.max - 100)
-        XCTAssertEqual(mp.uint64Value(), UInt64.max - 100)
-        XCTAssertEqual(mp.doubleValue(), Double(UInt64.max - 100))
-        XCTAssertEqual(mp.floatValue(), Float(UInt64.max - 100))
+        XCTAssertEqual(mp.uint64, UInt64.max - 100)
+        XCTAssertEqual(mp.double, Double(UInt64.max - 100))
+        XCTAssertEqual(mp.float, Float(UInt64.max - 100))
         #if arch(i386) || arch(arm)
-            XCTAssertNil(mp.uintValue())
+            XCTAssertNil(mp.uint)
         #else
-            XCTAssertNotNil(mp.uintValue())
+            XCTAssertNotNil(mp.uint)
         #endif
     }
 
@@ -206,44 +206,44 @@ class MPValueTests: XCTestCase {
 
 // MARK: - Expressibles
 
-extension MPValueTests {
+extension ValueBoxTests {
 
     func testExpressibleByArrayLiterals() {
-        let val: MPValue = [1, 2, 3]
+        let val: ValueBox = [1, 2, 3]
         XCTAssertEqual(val, .array([1, 2, 3]))
     }
 
     func testExpressibleByBooleanLiterals() {
-        let val: MPValue = true
+        let val: ValueBox = true
         XCTAssertEqual(val, .bool(true))
     }
 
     func testExpressibleByDictionaryLiterals() {
-        let val: MPValue = ["a": 1]
+        let val: ValueBox = ["a": 1]
         XCTAssertEqual(val, .dictionary(["a": 1]))
     }
 
     func testExpressibleByIntegerLiterals() {
-        let val: MPValue = 5
+        let val: ValueBox = 5
         XCTAssertEqual(val, .int64(5))
     }
 
     func testExpressibleByNilLiterals() {
-        let val: MPValue = nil
+        let val: ValueBox = nil
         XCTAssertEqual(val, .nil)
     }
 
     func testExpressibleByFloatLiterals() {
-        let asInt: MPValue = 5.0
+        let asInt: ValueBox = 5.0
         XCTAssertEqual(asInt, .int64(5))
-        let asFloat: MPValue = 0.5
+        let asFloat: ValueBox = 0.5
         XCTAssertEqual(asFloat, .float(0.5))
-        let asDouble: MPValue = 3.1415926535
+        let asDouble: ValueBox = 3.1415926535
         XCTAssertEqual(asDouble, .double(3.1415926535))
     }
 
     func testExpressibleByStringLiteral() {
-        let val: MPValue = "a"
+        let val: ValueBox = "a"
         XCTAssertEqual(val, .string("a"))
     }
 

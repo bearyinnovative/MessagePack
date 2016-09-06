@@ -55,7 +55,7 @@ class PackableTests: XCTestCase {
     }
 
     func testPackingDictionary() {
-        let dic: [MPValue: MPValue] = ["😇": [1: true]]
+        let dic: [ValueBox: ValueBox] = ["😇": [1: true]]
         XCTAssertEqual(radix(dic.packToBytes()), "81 a4 f0 9f 98 87 81 01 c3")
         let strInt = ["a": 1]
         XCTAssertEqual(radix(strInt.packToBytes()), "81 a1 61 01")
@@ -128,8 +128,8 @@ class PackableTests: XCTestCase {
         XCTAssertEqual(radix(int64.packToBytes()), "d3 80 00 00 00 00 00 00 64")
     }
 
-    func testPackingMPValues() {
-        let mpVals: [MPValue] = [1, "a", 4, true, 5, nil, 5.0, 3.1415926535, [1, "a"], ["k": 1], ["2": "f"], .binary(Binary(bytes: [0x7f])), .extension(Extension(type: 0x01, binary: Binary(bytes: [0x7f]))), 0.125, .uint64(UInt64.max)]
+    func testPackingValueBoxs() {
+        let mpVals: [ValueBox] = [1, "a", 4, true, 5, nil, 5.0, 3.1415926535, [1, "a"], ["k": 1], ["2": "f"], .binary(Binary(bytes: [0x7f])), .extension(Extension(type: 0x01, binary: Binary(bytes: [0x7f]))), 0.125, .uint64(UInt64.max)]
         XCTAssertEqual(radix(mpVals.packToBytes()), "9f 01 a1 61 04 c3 05 c0 05 cb 40 09 21 fb 54 41 17 44 92 01 a1 61 81 a1 6b 01 81 a1 32 a1 66 c4 01 7f d4 01 7f ca 3e 00 00 00 cf ff ff ff ff ff ff ff ff")
     }
 

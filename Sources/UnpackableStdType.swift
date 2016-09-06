@@ -8,90 +8,55 @@
 
 public protocol UnpackableStdType {}
 
-public protocol HashableUnpackableStdType: Hashable, UnpackableStdType {}
+extension Bool: UnpackableStdType {}
 
-extension Bool: HashableUnpackableStdType {}
+extension Double: UnpackableStdType {}
 
-extension Double: HashableUnpackableStdType {}
+extension Float: UnpackableStdType {}
 
-extension Float: HashableUnpackableStdType {}
+extension Int: UnpackableStdType {}
 
-extension Int: HashableUnpackableStdType {}
+extension Int64: UnpackableStdType {}
 
-extension Int64: HashableUnpackableStdType {}
+extension String: UnpackableStdType {}
 
-extension String: HashableUnpackableStdType {}
+extension UInt: UnpackableStdType {}
 
-extension UInt: HashableUnpackableStdType {}
+extension UInt64: UnpackableStdType {}
 
-extension UInt64: HashableUnpackableStdType {}
-
-public extension MPValue {
+public extension ValueBox {
 
     func value<T: UnpackableStdType>() -> T? {
         switch self {
         case .bool:
-            return boolValue() as? T
+            return bool as? T
         case .double:
-            return doubleValue() as? T
-                ?? floatValue() as? T
+            return double as? T
+                ?? float as? T
         case .float:
-            return floatValue() as? T
-                ?? doubleValue() as? T
+            return float as? T
+                ?? double as? T
         case .int64:
-            return int64Value() as? T
-                ?? uint64Value() as? T
-                ?? intValue() as? T
-                ?? uintValue() as? T
-                ?? doubleValue() as? T
-                ?? floatValue() as? T
+            return int64 as? T
+                ?? uint64 as? T
+                ?? int as? T
+                ?? uint as? T
+                ?? double as? T
+                ?? float as? T
         case .nil:
             return nil
         case .string:
-            return stringValue() as? T
+            return string as? T
         case .uint64:
-            return uint64Value() as? T
-                ?? int64Value() as? T
-                ?? uintValue() as? T
-                ?? intValue() as? T
-                ?? doubleValue() as? T
-                ?? floatValue() as? T
+            return uint64 as? T
+                ?? int64 as? T
+                ?? uint as? T
+                ?? int as? T
+                ?? double as? T
+                ?? float as? T
         default:
             return nil
         }
-    }
-
-    func arrayValue<T: UnpackableStdType>() -> [T]? {
-        guard let arr = arrayValue() else { return nil }
-        var ret = [T]()
-        for el in arr {
-            guard let t: T = el.value() else { return nil }
-            ret.append(t)
-        }
-
-        return ret
-    }
-
-    func dictionaryValue<K: HashableUnpackableStdType>() -> [K: MPValue]? {
-        guard let dic = dictionaryValue() else { return nil }
-        var ret = [K: MPValue]()
-        for (key, val) in dic {
-            guard let key: K = key.value() else { return nil }
-            ret[key] = val
-        }
-
-        return ret
-    }
-
-    func dictionaryValue<K: HashableUnpackableStdType, V: UnpackableStdType>() -> [K: V]? {
-        guard let dic = dictionaryValue() else { return nil }
-        var ret = [K: V]()
-        for (key, val) in dic {
-            guard let key: K = key.value(), let val: V = val.value() else { return nil }
-            ret[key] = val
-        }
-        
-        return ret
     }
 
 }

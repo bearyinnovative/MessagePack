@@ -15,10 +15,10 @@
 		E05507E21D475ABE008A1841 /* UnpackableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05507E11D475ABE008A1841 /* UnpackableTests.swift */; };
 		E0B704DA1D452A5500469ACD /* Spec.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B704D91D452A5500469ACD /* Spec.swift */; };
 		E0B704DC1D452D3F00469ACD /* Packable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B704DB1D452D3F00469ACD /* Packable.swift */; };
-		E0B704DE1D452EC800469ACD /* MPValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B704DD1D452EC800469ACD /* MPValue.swift */; };
+		E0B704DE1D452EC800469ACD /* ValueBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B704DD1D452EC800469ACD /* ValueBox.swift */; };
 		E0B704E11D459FAF00469ACD /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B704E01D459FAF00469ACD /* Data.swift */; };
 		E0B704E31D45A57400469ACD /* Unpackable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B704E21D45A57400469ACD /* Unpackable.swift */; };
-		E0BD26DB1D46F1B600958D05 /* MPValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BD26DA1D46F1B600958D05 /* MPValueTests.swift */; };
+		E0BD26DB1D46F1B600958D05 /* ValueBoxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BD26DA1D46F1B600958D05 /* ValueBoxTests.swift */; };
 		E0D0AE281D474C060092D21D /* UnpackableStdType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D0AE271D474C060092D21D /* UnpackableStdType.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,10 +44,10 @@
 		E05507E11D475ABE008A1841 /* UnpackableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnpackableTests.swift; sourceTree = "<group>"; };
 		E0B704D91D452A5500469ACD /* Spec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spec.swift; sourceTree = "<group>"; };
 		E0B704DB1D452D3F00469ACD /* Packable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Packable.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		E0B704DD1D452EC800469ACD /* MPValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MPValue.swift; sourceTree = "<group>"; };
+		E0B704DD1D452EC800469ACD /* ValueBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValueBox.swift; sourceTree = "<group>"; };
 		E0B704E01D459FAF00469ACD /* Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Data.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E0B704E21D45A57400469ACD /* Unpackable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Unpackable.swift; sourceTree = "<group>"; };
-		E0BD26DA1D46F1B600958D05 /* MPValueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MPValueTests.swift; sourceTree = "<group>"; };
+		E0BD26DA1D46F1B600958D05 /* ValueBoxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValueBoxTests.swift; sourceTree = "<group>"; };
 		E0D0AE271D474C060092D21D /* UnpackableStdType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnpackableStdType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,11 +95,11 @@
 			children = (
 				E0B704DF1D459F9600469ACD /* Supporting Files */,
 				E0B704E01D459FAF00469ACD /* Data.swift */,
-				E0B704DD1D452EC800469ACD /* MPValue.swift */,
 				E0B704D91D452A5500469ACD /* Spec.swift */,
 				E0B704DB1D452D3F00469ACD /* Packable.swift */,
 				E0B704E21D45A57400469ACD /* Unpackable.swift */,
 				E0D0AE271D474C060092D21D /* UnpackableStdType.swift */,
+				E0B704DD1D452EC800469ACD /* ValueBox.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -110,9 +110,9 @@
 				E0240E451D41D8CE00E8FD2F /* Info.plist */,
 				E039C56E1D45FF4500C18265 /* Bytes.swift */,
 				E002C90E1D4920C40059F339 /* DataTests.swift */,
-				E0BD26DA1D46F1B600958D05 /* MPValueTests.swift */,
 				E03B34B71D45FC2D00C25251 /* PackableTests.swift */,
 				E05507E11D475ABE008A1841 /* UnpackableTests.swift */,
+				E0BD26DA1D46F1B600958D05 /* ValueBoxTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -243,7 +243,7 @@
 			files = (
 				E0B704DA1D452A5500469ACD /* Spec.swift in Sources */,
 				E0B704E11D459FAF00469ACD /* Data.swift in Sources */,
-				E0B704DE1D452EC800469ACD /* MPValue.swift in Sources */,
+				E0B704DE1D452EC800469ACD /* ValueBox.swift in Sources */,
 				E0B704E31D45A57400469ACD /* Unpackable.swift in Sources */,
 				E0B704DC1D452D3F00469ACD /* Packable.swift in Sources */,
 				E0D0AE281D474C060092D21D /* UnpackableStdType.swift in Sources */,
@@ -254,7 +254,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E0BD26DB1D46F1B600958D05 /* MPValueTests.swift in Sources */,
+				E0BD26DB1D46F1B600958D05 /* ValueBoxTests.swift in Sources */,
 				E03B34B91D45FC4B00C25251 /* PackableTests.swift in Sources */,
 				E05507E21D475ABE008A1841 /* UnpackableTests.swift in Sources */,
 				E039C5701D45FF5200C18265 /* Bytes.swift in Sources */,

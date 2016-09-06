@@ -155,7 +155,7 @@ extension UInt64: Packable {
 
 }
 
-extension MPValue: Packable {
+extension ValueBox: Packable {
 
     public func packToBytes() -> Bytes {
         switch self {

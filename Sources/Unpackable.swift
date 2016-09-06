@@ -6,7 +6,7 @@
 //  Copyright © 2016 Beary Innovative. All rights reserved.
 //
 
-typealias UnpackedResult = (value: MPValue?, unpackedBytesCount: Int)
+typealias UnpackedResult = (value: ValueBox?, unpackedBytesCount: Int)
 
 protocol Unpackable {
 
@@ -63,10 +63,10 @@ extension Dictionary: Unpackable {
     static func unpack(bytes: Bytes, fromPosition pos: Int, mark: FormatMark) -> UnpackedResult {
         let (dicCount, dicStart) = _unpackInfoForArrayAndMap(bytes, pos, mark)
         guard
-            let (value, count) = _unpackArray(bytes, dicStart, count: dicCount*2),
-            let array = value?.arrayValue()
+            let (box, count) = _unpackArray(bytes, dicStart, count: dicCount*2),
+            let array = box?.array
         else { return (nil, 1) }
-        var dic = [MPValue: MPValue]()
+        var dic = [ValueBox: ValueBox]()
         stride(from: 0, to: array.count, by: 2).forEach { dic[array[$0]] = array[$0+1] }
         return (.dictionary(dic), dicStart - pos + count)
     }
@@ -229,7 +229,7 @@ public struct Unpacker { }
 
 extension Unpacker {
 
-    public static func unpack(bytes: Bytes) -> MPValue? {
+    public static func unpack(bytes: Bytes) -> ValueBox? {
         return unpack(bytes: bytes, fromPosition: 0)?.value
     }
 
@@ -240,7 +240,7 @@ extension Unpacker {
             case .positivefixnum, .uint8, .uint16, .uint32, .uint64:
                 return UInt64.self
             case .fixmap, .map16, .map32:
-                return Dictionary<MPValue, ()>.self
+                return Dictionary<ValueBox, ()>.self
             case .fixarray, .array16, .array32:
                 return Array<()>.self
             case .fixstr, .str8,.str16, .str32:
@@ -288,7 +288,7 @@ private func _unpackInfoForArrayAndMap(_ bytes: Bytes, _ pos: Int, _ mark: Forma
 
 // return nil if data is invalid
 private func _unpackArray(_ bytes: Bytes, _ pos: Int, count: Int) -> UnpackedResult? {
-    var results = [MPValue]()
+    var results = [ValueBox]()
     var markPos = pos
     for _ in 0 ..< count {
         guard
