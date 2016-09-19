@@ -22,13 +22,13 @@ Packable extended types:
 - `Binary`
 - `Extension`
 
-If you want to pack data with mixed types, use `MPValue`.
+If you want to pack data with mixed types, use `ValueBox`.
 
 # Unpacking
 
 ```swift
 struct Unpacker {
-    static func unpack(bytes: Bytes) -> MPValue?
+    static func unpack(bytes: Bytes) -> ValueBox?
 }
 ```
 
@@ -36,10 +36,7 @@ Unpack from data, conveniences for `Unpacker.unpack(bytes:)`:
 
 ```swift
 extension Data {
-    func unpack() -> MessagePack.MPValue?
-    func unpack<T : UnpackableStdType>() -> T?
-    func unpack<T : UnpackableStdType>() -> [T]?
-    func unpack<K : HashableUnpackableStdType, V : UnpackableStdType>() -> [K : V]?
+    func unpack() -> ValueBox?
 }
 ```
 
@@ -53,14 +50,14 @@ Unpackable stdlib types contains:
 - `UInt`
 - `UInt64`
 
-For other mixed types, you can alway use `MPValue` instead.
+For other mixed types, you can alway use `ValueBox` instead.
 
 ```swift
-enum MPValue {
-    case array([MPValue])
+enum ValueBox {
+    case array([ValueBox])
     case binary(Binary)
     case bool(Bool)
-    case dictionary([MPValue: MPValue])
+    case dictionary([ValueBox: ValueBox])
     case double(Double)
     case `extension`(Extension)
     case float(Float)
