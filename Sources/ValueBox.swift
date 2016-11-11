@@ -125,6 +125,54 @@ public extension ValueBox {
     
 }
 
+// MARK: - subscript support
+
+public extension ValueBox {
+    subscript (keyPath: String) -> ValueBox? {
+        return box(for: keyPath)
+    }
+
+    subscript (array keyPath: String) -> [ValueBox]? {
+        return self[keyPath]?.array
+    }
+
+    subscript (binary keyPath: String) -> Binary? {
+        return self[keyPath]?.binary
+    }
+
+    subscript (bool keyPath: String) -> Bool? {
+        return self[keyPath]?.bool
+    }
+
+    subscript (dictionary keyPath: String) -> [ValueBox: ValueBox]? {
+        return self[keyPath]?.dictionary
+    }
+
+    subscript (double keyPath: String) -> Double? {
+        return self[keyPath]?.double
+    }
+
+    subscript (extension keyPath: String) -> Extension? {
+        return self[keyPath]?.extension
+    }
+
+    subscript (float keyPath: String) -> Float? {
+        return self[keyPath]?.float
+    }
+
+    subscript (int64 keyPath: String) -> Int64? {
+        return self[keyPath]?.int64
+    }
+
+    subscript (string keyPath: String) -> String? {
+        return self[keyPath]?.string
+    }
+
+    subscript (uint64 keyPath: String) -> UInt64? {
+        return self[keyPath]?.uint64
+    }
+}
+
 // MARK: - Hashable
 
 extension ValueBox: Hashable {
