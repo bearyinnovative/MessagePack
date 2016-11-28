@@ -103,7 +103,7 @@ public extension ValueBox {
 
     var uint: UInt? {
         #if arch(arm) || arch(i386)
-            return uint64Value().flatMap { $0 >= UInt64(UInt.min) && $0 <= UInt64(UInt.max) ? UInt($0) : nil }
+            return uint64.flatMap { $0 >= UInt64(UInt.min) && $0 <= UInt64(UInt.max) ? UInt($0) : nil }
         #else
             return uint64.flatMap(UInt.init)
         #endif
