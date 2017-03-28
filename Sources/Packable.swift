@@ -52,7 +52,7 @@ extension Dictionary where Key: Hashable, Key: Packable, Value: Packable {
 extension Double: Packable {
 
     public func packToBytes() -> Bytes {
-        let intValue = unsafeBitCast(self, to: UInt64.self)
+        let intValue = self.bitPattern
         return [FormatMark.double.rawValue] + _bytes(of: intValue)
     }
 
@@ -92,7 +92,7 @@ extension Extension: Packable {
 extension Float: Packable {
 
     public func packToBytes() -> Bytes {
-        let intValue = unsafeBitCast(self, to: UInt32.self)
+        let intValue = self.bitPattern
         return [FormatMark.float.rawValue] + _bytes(of: intValue)
     }
 

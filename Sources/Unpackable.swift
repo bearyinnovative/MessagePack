@@ -77,7 +77,7 @@ extension Double: Unpackable {
 
     static func unpack(bytes: Bytes, fromPosition pos: Int, mark: FormatMark) -> UnpackedResult {
         let dblBytes = _uint64(from: bytes, range: pos+1 ..< pos+9)
-        let dblValue = unsafeBitCast(dblBytes, to: Double.self)
+        let dblValue = Double(bitPattern: dblBytes)
         return (.double(dblValue), 9)
     }
 
@@ -135,7 +135,7 @@ extension Float: Unpackable {
 
     static func unpack(bytes: Bytes, fromPosition pos: Int, mark: FormatMark) -> UnpackedResult {
         let fltBytes = _uint64(from: bytes, range: pos+1 ..< pos+5)
-        let fltValue = unsafeBitCast(UInt32(truncatingBitPattern:fltBytes), to: Float.self)
+        let fltValue = Float(bitPattern: UInt32(truncatingBitPattern:fltBytes))
         return (.float(fltValue), 5)
     }
 
