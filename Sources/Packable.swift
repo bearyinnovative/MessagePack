@@ -219,7 +219,7 @@ private func _packPositive(int: UInt64) -> Bytes {
     if int <= 0x7f        { return [FormatMark.positivefixnum.rawValue | Byte(truncatingBitPattern: int)] }
     if int <= 0xff        { return [FormatMark.uint8.rawValue, Byte(truncatingBitPattern: int)] }
     if int <= 0xffff      { return [FormatMark.uint16.rawValue] + _bytes(of: UInt16(int)) }
-    if int <= 0xffff_ffff { return [FormatMark.uint32.rawValue] + _bytes(of: UInt32(int)) }
+    if int <= 0xffff_ffff as UInt64 { return [FormatMark.uint32.rawValue] + _bytes(of: UInt32(int)) }
     return [FormatMark.uint64.rawValue] + _bytes(of: UInt64(int))
 }
 
