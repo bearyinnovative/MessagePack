@@ -33,13 +33,13 @@ class UnpackableTests: XCTestCase {
         XCTAssertEqual(unpack?.bytes.count, 0x10)
         XCTAssertEqual(unpack?.bytes[0x9], 0x9)
 
-        data = (0..<0x01_10).map { UInt8(truncatingBitPattern: $0) }
+        data = (0..<0x01_10).map { UInt8(truncatingIfNeeded: $0) }
         bytes = [0xc5, 0x01, 0x10] + data
         unpack = Unpacker.unpack(bytes: bytes)?.binary
         XCTAssertEqual(unpack?.bytes.count, 0x01_10)
         XCTAssertEqual(unpack?.bytes[0x9], 0x9)
 
-        data = (0..<0x01_00_10).map { UInt8(truncatingBitPattern: $0) }
+        data = (0..<0x01_00_10).map { UInt8(truncatingIfNeeded: $0) }
         bytes = [0xc6, 0x00, 0x01, 0x00, 0x10] + data
         unpack = Unpacker.unpack(bytes: bytes)?.binary
         XCTAssertEqual(unpack?.bytes.count, 0x01_00_10)
@@ -199,7 +199,7 @@ class UnpackableTests: XCTestCase {
         repeat {
             str16 += str16
         } while str16.utf8.count < 0x01_00
-        bytes = [0xda, Byte(truncatingBitPattern: str16.utf8.count >> 8), Byte(truncatingBitPattern: str16.utf8.count)] + str16.utf8
+        bytes = [0xda, Byte(truncatingIfNeeded: str16.utf8.count >> 8), Byte(truncatingIfNeeded: str16.utf8.count)] + str16.utf8
         unpack = Unpacker.unpack(bytes: bytes)?.string
         XCTAssertTrue(unpack?.hasPrefix(sample) == true)
 
@@ -207,7 +207,7 @@ class UnpackableTests: XCTestCase {
         repeat {
             str32 += str32
         } while str32.utf8.count < 0x00_01_00_00
-        bytes = [0xdb, Byte(truncatingBitPattern: str32.utf8.count >> 24), Byte(truncatingBitPattern: str32.utf8.count >> 16), Byte(truncatingBitPattern: str32.utf8.count >> 8), Byte(truncatingBitPattern: str32.utf8.count)] + str32.utf8
+        bytes = [0xdb, Byte(truncatingIfNeeded: str32.utf8.count >> 24), Byte(truncatingIfNeeded: str32.utf8.count >> 16), Byte(truncatingIfNeeded: str32.utf8.count >> 8), Byte(truncatingIfNeeded: str32.utf8.count)] + str32.utf8
         unpack = Unpacker.unpack(bytes: bytes)?.string
         XCTAssertTrue(unpack?.hasPrefix(sample) == true)
     }

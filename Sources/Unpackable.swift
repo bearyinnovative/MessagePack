@@ -135,7 +135,7 @@ extension Float: Unpackable {
 
     static func unpack(bytes: Bytes, fromPosition pos: Int, mark: FormatMark) -> UnpackedResult {
         let fltBytes = _uint64(from: bytes, range: pos+1 ..< pos+5)
-        let fltValue = Float(bitPattern: UInt32(truncatingBitPattern:fltBytes))
+        let fltValue = Float(bitPattern: UInt32(truncatingIfNeeded:fltBytes))
         return (.float(fltValue), 5)
     }
 
@@ -152,10 +152,10 @@ extension Int64: Unpackable {
                 return (Int64(Int8(bitPattern: bytes[pos+1])), 2)
             case .int16:
                 let uint = _uint64(from: bytes, range: pos+1 ..< pos+3)
-                return (Int64(Int16(bitPattern: UInt16(truncatingBitPattern: uint))), 3)
+                return (Int64(Int16(bitPattern: UInt16(truncatingIfNeeded: uint))), 3)
             case .int32:
                 let uint = _uint64(from: bytes, range: pos+1 ..< pos+5)
-                return (Int64(Int32(bitPattern: UInt32(truncatingBitPattern: uint))), 5)
+                return (Int64(Int32(bitPattern: UInt32(truncatingIfNeeded: uint))), 5)
             default: // .int64
                 let uint = _uint64(from: bytes, range: pos+1 ..< pos+9)
                 return (Int64(bitPattern: uint), 9)
@@ -271,7 +271,7 @@ extension Unpacker {
 private func _uint64(from bytes: Bytes, range: Range<Int>) -> UInt64 {
     let bytes: Bytes = Array(bytes[range])
     return bytes.enumerated().reduce(0) { acc, iter in
-        acc | numericCast(iter.element) << numericCast((bytes.count - 1 - iter.offset) * 8)
+        acc | (numericCast(iter.element) as UInt64) << (numericCast((bytes.count - 1 - iter.offset) * 8) as UInt64)
     }
 }
 

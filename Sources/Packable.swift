@@ -41,7 +41,7 @@ extension Bool: Packable {
 
 }
 
-extension Dictionary where Key: Hashable, Key: Packable, Value: Packable {
+extension Dictionary where Key: Packable, Value: Packable {
 
     public func packToBytes() -> Bytes {
         return _collectionMarkerBytes(length: count, markers: [.fixmap, .map16, .map32]) + flatMap { $0.packToBytes() + $1.packToBytes() }
@@ -190,7 +190,9 @@ extension ValueBox: Packable {
 private func _bytes<T: UnsignedInteger>(of uint: T) -> Bytes {
     let size = UInt64(MemoryLayout<T>.size)
     let high = 8 * (size - 1)
-    return stride(from: high, through: 0, by: -8).map { Byte(truncatingBitPattern: numericCast(uint) >> $0) }
+    return stride(from: high, through: 0, by: -8).map {
+        return Byte(truncatingIfNeeded: (numericCast(uint) as T) >> $0)
+    }
 }
 
 private func _collectionMarkerBytes(length: Int, markers: [FormatMark]) -> Bytes {
@@ -216,16 +218,16 @@ private func _binaryMarkerBytes(length: Int, markers: [FormatMark]) -> Bytes {
 }
 
 private func _packPositive(int: UInt64) -> Bytes {
-    if int <= 0x7f        { return [FormatMark.positivefixnum.rawValue | Byte(truncatingBitPattern: int)] }
-    if int <= 0xff        { return [FormatMark.uint8.rawValue, Byte(truncatingBitPattern: int)] }
+    if int <= 0x7f        { return [FormatMark.positivefixnum.rawValue | Byte(truncatingIfNeeded: int)] }
+    if int <= 0xff        { return [FormatMark.uint8.rawValue, Byte(truncatingIfNeeded: int)] }
     if int <= 0xffff      { return [FormatMark.uint16.rawValue] + _bytes(of: UInt16(int)) }
     if int <= 0xffff_ffff as UInt64 { return [FormatMark.uint32.rawValue] + _bytes(of: UInt32(int)) }
     return [FormatMark.uint64.rawValue] + _bytes(of: UInt64(int))
 }
 
 private func _packNegative(int: Int64) -> Bytes {
-    if int >= -0x20        { return [FormatMark.negativefixnum.rawValue + 0x1f & Byte(truncatingBitPattern: int)] }
-    if int >= -0x7f        { return [FormatMark.int8.rawValue, Byte(truncatingBitPattern: int)] }
+    if int >= -0x20        { return [FormatMark.negativefixnum.rawValue + 0x1f & Byte(truncatingIfNeeded: int)] }
+    if int >= -0x7f        { return [FormatMark.int8.rawValue, Byte(truncatingIfNeeded: int)] }
     if int >= -0x7fff      { return [FormatMark.int16.rawValue] + _bytes(of: UInt16(bitPattern: numericCast(int))) }
     if int >= -0x7fff_ffff { return [FormatMark.int32.rawValue] + _bytes(of: UInt32(bitPattern: numericCast(int))) }
     return [FormatMark.int64.rawValue] + _bytes(of: UInt64(bitPattern: int))
