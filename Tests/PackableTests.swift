@@ -159,13 +159,13 @@ class PackableTests: XCTestCase {
             str16 += c
         } while str16.utf8.count < 0xff + 24
         packed = str16.packToBytes()
-        XCTAssertEqual(packed[0..<c.utf8.count+3], [FormatMark.str16.rawValue, Byte(truncatingBitPattern: str16.utf8.count >> 8), Byte(truncatingBitPattern: str16.utf8.count)] + c.utf8)
+        XCTAssertEqual(packed[0..<c.utf8.count+3], [FormatMark.str16.rawValue, Byte(truncatingIfNeeded: str16.utf8.count >> 8), Byte(truncatingIfNeeded: str16.utf8.count)] + c.utf8)
         var str32 = c
         repeat {
             str32 += c
         } while str32.utf8.count < 0xffff + 24
         packed = str32.packToBytes()
-        let expBytes = [FormatMark.str32.rawValue, Byte(truncatingBitPattern: str32.utf8.count >> 24), Byte(truncatingBitPattern: str32.utf8.count >> 16), Byte(truncatingBitPattern: str32.utf8.count >> 8), Byte(truncatingBitPattern: str32.utf8.count)] + c.utf8
+        let expBytes = [FormatMark.str32.rawValue, Byte(truncatingIfNeeded: str32.utf8.count >> 24), Byte(truncatingIfNeeded: str32.utf8.count >> 16), Byte(truncatingIfNeeded: str32.utf8.count >> 8), Byte(truncatingIfNeeded: str32.utf8.count)] + c.utf8
         XCTAssertEqual(Array(packed[0..<c.utf8.count+5]), expBytes)
     }
 

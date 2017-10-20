@@ -34,7 +34,7 @@ extension Array where Element: Packable {
 
 }
 
-extension Dictionary where Key: Hashable, Key: Packable, Value: Packable {
+extension Dictionary where Key: Packable, Value: Packable {
 
     public func pack() -> Data {
         return Data(bytes: packToBytes())
