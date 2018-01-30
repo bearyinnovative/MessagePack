@@ -1,4 +1,4 @@
 module CommonDigest {
-    header "./header.h"
+    header "/usr/include/CommonCrypto/CommonDigest.h"
     export *
 }
