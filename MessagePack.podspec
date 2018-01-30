@@ -13,5 +13,10 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Sources/*.swift'
   s.preserve_paths = 'Sources/CommonDigest/module.modulemap'
-  s.xcconfig = { 'SWIFT_INCLUDE_PATHS' => '$(PODS_ROOT)/../../MessagePack/Sources/CommonDigest' }
+  s.pod_target_xcconfig = {
+    'SWIFT_INCLUDE_PATHS[sdk=macosx*]'           => '$(PODS_ROOT)/MessagePack/CocoaPods/macosx',
+    'SWIFT_INCLUDE_PATHS[sdk=iphoneos*]'         => '$(PODS_ROOT)/MessagePack/CocoaPods/iphoneos',
+    'SWIFT_INCLUDE_PATHS[sdk=iphonesimulator*]'  => '$(PODS_ROOT)/MessagePack/CocoaPods/iphonesimulator'
+    'SWIFT_VERSION' => '4.0'
+  }
 end
