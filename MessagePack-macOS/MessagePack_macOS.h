@@ -2,8 +2,8 @@
 //  MessagePack_macOS.h
 //  MessagePack-macOS
 //
-//  Created by lang on 20/11/2017.
-//  Copyright © 2017 Beary Innovative. All rights reserved.
+//  Created by lang on 27/02/2018.
+//  Copyright © 2018 Beary Innovative. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

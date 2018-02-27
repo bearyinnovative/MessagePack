@@ -2,11 +2,11 @@
 //  MessagePack.h
 //  MessagePack
 //
-//  Created by CHEN Xian’an on 22/07/2016.
-//  Copyright © 2016 Beary Innovative. All rights reserved.
+//  Created by lang on 27/02/2018.
+//  Copyright © 2018 Beary Innovative. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 //! Project version number for MessagePack.
 FOUNDATION_EXPORT double MessagePackVersionNumber;
