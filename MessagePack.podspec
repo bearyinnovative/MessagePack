@@ -12,7 +12,22 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.12'
   s.static_framework = true
 
-  s.source_files = 'Sources/*.swift'
-  s.preserve_paths = 'Sources/CommonDigest/module.modulemap'
-  s.pod_target_xcconfig = { 'SWIFT_INCLUDE_PATHS' => '$(PODS_ROOT)/../../MessagePack/Sources/CommonDigest' }
+
+  # _code_lambda = lambda {
+  #   s.source_files = 'Sources/*.swift'
+  #   s.preserve_paths = 'Sources/CommonDigest/module.modulemap'
+  #   s.pod_target_xcconfig = { 'SWIFT_INCLUDE_PATHS' => '$(PODS_ROOT)/../../MessagePack/Sources/CommonDigest' }
+  # }
+  # begin
+  #   require '../Mandrake/Components/CommonPods.rb'
+  #   generate_framework_for_spec_ifneed(s, _code_lambda)
+  # rescue LoadError
+  #   _code_lambda.call
+  # end
+  require '../Mandrake/Components/CommonPods.rb'
+  generate_framework_for_spec_ifneed(s) {
+    s.source_files = 'Sources/*.swift'
+    s.preserve_paths = 'Sources/CommonDigest/module.modulemap'
+    s.pod_target_xcconfig = { 'SWIFT_INCLUDE_PATHS' => '$(PODS_ROOT)/../../MessagePack/Sources/CommonDigest' }
+  }
 end
