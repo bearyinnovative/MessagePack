@@ -1,4 +1,0 @@
-module CommonDigest {
-    header "./header.h"
-    export *
-}

@@ -13,7 +13,5 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = "9.0"
   s.osx.deployment_target = '10.12'
 
-  s.source_files        = 'Sources/*.swift'
-  s.preserve_paths      = 'Sources/CommonDigest/*.*'
-  s.pod_target_xcconfig = { 'SWIFT_INCLUDE_PATHS' => '$(PODS_ROOT)/MessagePack/Sources/CommonDigest' }
+  s.source_files = 'Sources/*.swift'
 end
