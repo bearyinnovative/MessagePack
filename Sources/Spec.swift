@@ -6,7 +6,7 @@
 //  Copyright © 2016 Beary Innovative. All rights reserved.
 //
 
-import CommonDigest
+import CommonCrypto
 
 public typealias Byte = UInt8
 
@@ -30,7 +30,7 @@ public struct Binary {
 extension Binary: Hashable {
 
     public var hashValue: Int {
-        return hash(bytes: bytes)
+        return MessagePack.hash(bytes: bytes)
     }
 
 }
@@ -56,7 +56,7 @@ public struct Extension {
 extension Extension: Hashable {
 
     public var hashValue: Int {
-        return hash(bytes: [UInt8(type)] + binary.bytes)
+        return MessagePack.hash(bytes: [UInt8(type)] + binary.bytes)
     }
 
 }
